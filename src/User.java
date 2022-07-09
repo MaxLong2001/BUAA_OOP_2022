@@ -446,15 +446,15 @@ public class User {
         if (thisUser instanceof Student) {
             thisDiscount = ((Student) thisUser).discount;
         }
-        for (Ticket value : thisTicketList) {
-            if (thisDiscount >= value.num) {
-                thisDiscount -= value.num;
-                ticketPaidInDiscount += value.num;
-                totalTicketPrice += value.totalPrice * 0.05;
+        for (int i = 0; i < thisTicketList.size(); i++) {
+            if (thisDiscount >= thisTicketList.get(i).num) {
+                thisDiscount -= thisTicketList.get(i).num;
+                ticketPaidInDiscount += thisTicketList.get(i).num;
+                totalTicketPrice += thisTicketList.get(i).totalPrice * 0.05;
             } else {
-                totalTicketPrice += (value.totalPrice / value.num) * thisDiscount * 0.05;
+                totalTicketPrice += (thisTicketList.get(i).totalPrice / thisTicketList.get(i).num) * thisDiscount * 0.05;
                 ticketPaidInDiscount += thisDiscount;
-                totalTicketPrice += (value.totalPrice / value.num) * (value.num - thisDiscount);
+                totalTicketPrice += (thisTicketList.get(i).totalPrice / thisTicketList.get(i).num) * (thisTicketList.get(i).num - thisDiscount);
                 thisDiscount = 0;
             }
         }
@@ -468,8 +468,8 @@ public class User {
         if (thisUser instanceof Student) {
             ((Student) thisUser).discount -= ticketPaidInDiscount;
         }
-        for (Ticket ticket : thisTicketList) {
-            ticket.paid = true;
+        for (int i = 0; i < thisTicketList.size(); i++) {
+            thisTicketList.get(i).paid = true;
         }
 
         System.out.println("Payment success");

@@ -8,6 +8,9 @@ public class Ticket {
     double totalPrice;
     boolean paid;
 
+    public Ticket() {
+    }
+
     public Ticket(String aadhaar, String ticketTrainNo, String stationName1, String stationName2, String seatType, int num, double totalPrice) {
         this.aadhaar = aadhaar;
         this.ticketTrainNo = ticketTrainNo;

@@ -35,8 +35,8 @@ public class Test {
                             user.addUser(argOpts[1], argOpts[2], argOpts[3]);
                             userList.add(user);
                         } else {
-                            Student student = new Student();
-                            student.addStudent(argOpts[1], argOpts[2], argOpts[3], argOpts[4]);
+                            User student = new Student();
+                            ((Student) student).addStudent(argOpts[1], argOpts[2], argOpts[3], argOpts[4]);
                             userList.add(student);
                         }
                     }

@@ -13,6 +13,10 @@ public class Student extends User {
         System.out.println(this);
     }
 
+    public int getDiscount() {
+        return discount;
+    }
+
     public void setDiscount(int discount) {
         this.discount = discount;
     }

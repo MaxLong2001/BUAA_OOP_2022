@@ -141,6 +141,26 @@ public class Line {
     public String getLineNo() {
         return lineNo;
     }
+
+    public void setLineNo(String lineNo) {
+        this.lineNo = lineNo;
+    }
+
+    public int getLoad() {
+        return load;
+    }
+
+    public void setLoad(int load) {
+        this.load = load;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
 }
 
 class LineComparator implements Comparator<Line> {
