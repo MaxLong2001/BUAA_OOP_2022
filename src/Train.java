@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class Train {
@@ -49,14 +50,14 @@ public class Train {
         }
 
         for (int i = 3; i < args.length; i += 2) {
-            if (!args[i].matches("^[\\d.]+$")) {
+            if (!args[i].matches("^[0-9.]+$")) {
                 System.out.println("Price illegal");
                 return;
             }
         }
 
         for (int i = 4; i < args.length; i += 2) {
-            if (!args[i].matches("^\\d+$")) {
+            if (!args[i].matches("^[0-9]+$")) {
                 System.out.println("Ticket num illegal");
                 return;
             }
@@ -168,7 +169,7 @@ public class Train {
 
         double thisTicketPrice = 0;
         int thisTicketNum = 0;
-        int thisDistance;
+        int thisDistance = 0;
         thisDistance = Math.abs(thisLine.stations.get(thisStationIndex1).distance - thisLine.stations.get(thisStationIndex2).distance);
         if (thisSeat.equals("CC") || thisSeat.equals("SC") || thisSeat.equals("1A")) {
             thisTicketPrice = thisTrain.ticketPrice[0];
@@ -181,7 +182,7 @@ public class Train {
             thisTicketNum = thisTrain.ticketNum[2];
         }
 
-        System.out.printf("[%s: %s->%s] seat:%s remain:%d distance:%d price:%.2f\n", args[1], args[2], args[3], args[4], thisTicketNum, thisDistance, (double) thisDistance * thisTicketPrice);
+        System.out.printf("[%s: %s->%s] seat:%s remain:%d distance:%d price:%.2f\n", args[1], args[2], args[3], args[4], thisTicketNum, thisDistance, (double)thisDistance * thisTicketPrice);
     }
 
     public static void listTrain(String[] args) {
@@ -198,7 +199,7 @@ public class Train {
 
             Test.trainList.sort(new TrainComparator());
             for (int i = 0; i < Test.trainList.size(); i++) {
-                System.out.printf("[%d] ", i + 1);
+                System.out.printf("[%d] ", i+1);
                 System.out.println(Test.trainList.get(i));
             }
         } else {
@@ -216,7 +217,7 @@ public class Train {
 
             thisLine.trains.sort(new TrainComparator());
             for (int i = 0; i < thisLine.trains.size(); i++) {
-                System.out.printf("[%d] ", i + 1);
+                System.out.printf("[%d] ", i+1);
                 System.out.println(thisLine.trains.get(i));
             }
         }
