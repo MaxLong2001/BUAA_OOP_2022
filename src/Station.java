@@ -27,7 +27,7 @@ public class Station {
             return;
         }
 
-        if (!args[3].matches("^\\d+$")) {
+        if (!args[3].matches("^[0-9]+$")) {
             System.out.println("Arguments illegal");
             return;
         }

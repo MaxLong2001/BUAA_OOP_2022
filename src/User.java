@@ -1,12 +1,9 @@
-import java.util.ArrayList;
-
 public class User {
-    String name;
-    char sex;
-    String Aadhaar;
-    double balance;
+    private String name;
+    private char sex;
+    private String Aadhaar;
 
-    int errno = 0;
+    private int errno = 0;
 
     public void addUser(String argsName, String argsSex, String argsAadhaar) {
         setName(argsName);
@@ -15,7 +12,6 @@ public class User {
         if (errno != 0) return;
         setAadhaar(argsAadhaar, argsName);
         if (errno != 0) return;
-        setBalance(0);
         System.out.println(this);
     }
 
@@ -49,11 +45,6 @@ public class User {
     }
 
     public void setAadhaar(String aadhaar, String name) {
-        if (aadhaar.length() != 12) {
-            System.out.println("Aadhaar number illegal");
-            errno = 3;
-            return;
-        }
         int area = Integer.parseInt(aadhaar.substring(0, 4));
         int caste = Integer.parseInt(aadhaar.substring(4, 8));
         int identity = Integer.parseInt(aadhaar.substring(8, 11));
@@ -73,14 +64,6 @@ public class User {
             Aadhaar = aadhaar;
             UserData.getInstance().addData(aadhaar, name);
         }
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
     }
 
     public static void login(String[] args) {
@@ -168,17 +151,6 @@ public class User {
         } else if (args[1].charAt(0) == 'K') {
             if (!thisSeat.equals("1A") && !thisSeat.equals("2A")) {
                 System.out.println("Seat does not match");
-                return;
-            }
-        }
-
-        if (args[4].equals("1A") || args[4].equals("2A")) {
-            if (!Test.certMap.containsKey(Test.logged)) {
-                System.out.println("Cert illegal");
-                return;
-            }
-            if (Test.certMap.get(Test.logged)) {
-                System.out.println("Cert illegal");
                 return;
             }
         }
@@ -275,248 +247,6 @@ public class User {
         if (countTicketRecords == 0) {
             System.out.println("No order");
         }
-    }
-
-    public static void rechargeBalance(String[] args) {
-        if (args.length != 2) {
-            System.out.println("Arguments illegal");
-            return;
-        }
-
-        if (Test.logged.equals("")) {
-            System.out.println("Please login first");
-            return;
-        }
-
-        double rechargeAmount = Double.parseDouble(args[1]);
-        if (rechargeAmount < 0) {
-            System.out.println("Arguments illegal");
-            return;
-        }
-
-        User thisUser;
-        for (int i = 0; i < Test.userList.size(); i++) {
-            if (Test.userList.get(i).Aadhaar.equals(Test.logged)) {
-                thisUser = Test.userList.get(i);
-                thisUser.balance += rechargeAmount;
-                System.out.println("Recharge success");
-                break;
-            }
-        }
-    }
-
-    public static void checkBalance(String[] args) {
-        if (args.length != 1) {
-            System.out.println("Arguments illegal");
-            return;
-        }
-
-        if (Test.logged.equals("")) {
-            System.out.println("Please login first");
-            return;
-        }
-
-        User thisUser;
-        for (int i = 0; i < Test.userList.size(); i++) {
-            if (Test.userList.get(i).Aadhaar.equals(Test.logged)) {
-                thisUser = Test.userList.get(i);
-                System.out.println("UserName:" + thisUser.name + "\nBalance:" + String.format("%.2f", thisUser.balance));
-                break;
-            }
-        }
-
-    }
-
-    public static void cancelOrder(String[] args) {
-        if (args.length != 6) {
-            System.out.println("Arguments illegal");
-            return;
-        }
-
-        if (Test.logged.equals("")) {
-            System.out.println("Please login first");
-            return;
-        }
-
-        boolean findFlag = false;
-        int thisCancelNum = Integer.parseInt(args[5]);
-        int totalLeftNum = 0;
-        for (int i = Test.ticketList.size() - 1; i >= 0; i--) {
-            if (Test.ticketList.get(i).aadhaar.equals(Test.logged) &&
-                    Test.ticketList.get(i).ticketTrainNo.equals(args[1]) &&
-                    Test.ticketList.get(i).stationName1.equals(args[2]) &&
-                    Test.ticketList.get(i).stationName2.equals(args[3]) &&
-                    Test.ticketList.get(i).seatType.equals(args[4]) &&
-                    !Test.ticketList.get(i).paid) {
-                totalLeftNum += Test.ticketList.get(i).num;
-                findFlag = true;
-            }
-        }
-
-        if (!findFlag) {
-            System.out.println("No such Record");
-            return;
-        }
-
-        if (thisCancelNum > totalLeftNum) {
-            System.out.println("No enough orders");
-            return;
-        }
-
-        int thisTrainIndex = Train.findTrain(args[1]);
-        Train thisTrain = Test.trainList.get(thisTrainIndex);
-        String thisSeat = args[4];
-        switch (args[1].charAt(0)) {
-            case '0':
-                if (thisSeat.equals("CC")) thisTrain.ticketNum[0] += thisCancelNum;
-                else if (thisSeat.equals("SB")) thisTrain.ticketNum[1] += thisCancelNum;
-                else if (thisSeat.equals("GG")) thisTrain.ticketNum[2] += thisCancelNum;
-                break;
-            case 'G':
-                if (thisSeat.equals("SC")) thisTrain.ticketNum[0] += thisCancelNum;
-                else if (thisSeat.equals("HC")) thisTrain.ticketNum[1] += thisCancelNum;
-                else if (thisSeat.equals("SB")) thisTrain.ticketNum[2] += thisCancelNum;
-                break;
-            case 'K':
-                if (thisSeat.equals("1A")) thisTrain.ticketNum[0] += thisCancelNum;
-                else if (thisSeat.equals("2A")) thisTrain.ticketNum[1] += thisCancelNum;
-                break;
-        }
-
-        for (int i = Test.ticketList.size() - 1; i >= 0; i--) {
-            if (Test.ticketList.get(i).aadhaar.equals(Test.logged) &&
-                    Test.ticketList.get(i).ticketTrainNo.equals(args[1]) &&
-                    Test.ticketList.get(i).stationName1.equals(args[2]) &&
-                    Test.ticketList.get(i).stationName2.equals(args[3]) &&
-                    Test.ticketList.get(i).seatType.equals(args[4]) &&
-                    !Test.ticketList.get(i).paid) {
-                if (thisCancelNum > Test.ticketList.get(i).num) {
-                    thisCancelNum -= Test.ticketList.get(i).num;
-                    Test.ticketList.remove(i);
-                } else if (thisCancelNum == Test.ticketList.get(i).num) {
-                    Test.ticketList.remove(i);
-                    break;
-                } else {
-                    Test.ticketList.get(i).num -= thisCancelNum;
-                    updateOrder(i);
-                    break;
-                }
-            }
-        }
-
-        System.out.println("Cancel success");
-    }
-
-    public static void payOrder(String[] args) {
-        if (args.length != 1) {
-            System.out.println("Arguments illegal");
-            return;
-        }
-
-        if (Test.logged.equals("")) {
-            System.out.println("Please login first");
-            return;
-        }
-
-        int countTicketRecords = 0;
-        ArrayList<Ticket> thisTicketList = new ArrayList<>();
-        for (int i = Test.ticketList.size() - 1; i >= 0; i--) {
-            if (Test.ticketList.get(i).aadhaar.equals(Test.logged) && !Test.ticketList.get(i).paid) {
-                countTicketRecords++;
-                thisTicketList.add(Test.ticketList.get(i));
-            }
-        }
-
-        if (countTicketRecords == 0) {
-            System.out.println("No order");
-            return;
-        }
-
-        User thisUser = null;
-        for (int i = Test.userList.size() - 1; i >= 0; i--) {
-            if (Test.userList.get(i).Aadhaar.equals(Test.logged)) {
-                thisUser = Test.userList.get(i);
-                break;
-            }
-        }
-
-        double totalTicketPrice = 0;
-        int thisDiscount = 0;
-        int ticketPaidInDiscount = 0;
-        if (thisUser instanceof Student) {
-            thisDiscount = ((Student) thisUser).discount;
-        }
-        for (Ticket value : thisTicketList) {
-            if (thisDiscount >= value.num) {
-                thisDiscount -= value.num;
-                ticketPaidInDiscount += value.num;
-                totalTicketPrice += value.totalPrice * 0.05;
-            } else {
-                totalTicketPrice += (value.totalPrice / value.num) * thisDiscount * 0.05;
-                ticketPaidInDiscount += thisDiscount;
-                totalTicketPrice += (value.totalPrice / value.num) * (value.num - thisDiscount);
-                thisDiscount = 0;
-            }
-        }
-
-        if (thisUser.balance < totalTicketPrice) {
-            System.out.println("Balance does not enough");
-            return;
-        }
-
-        thisUser.balance -= totalTicketPrice;
-        if (thisUser instanceof Student) {
-            ((Student) thisUser).discount -= ticketPaidInDiscount;
-        }
-        for (Ticket ticket : thisTicketList) {
-            ticket.paid = true;
-        }
-
-        System.out.println("Payment success");
-    }
-
-    public static void updateOrder(int index) {
-        Ticket thisTicket = Test.ticketList.get(index);
-        int thisTrainIndex = Train.findTrain(thisTicket.ticketTrainNo);
-        Train thisTrain = Test.trainList.get(thisTrainIndex);
-        String thisSeat = thisTicket.seatType;
-        double thisTicketPrice = 0;
-        switch (thisTicket.ticketTrainNo.charAt(0)) {
-            case '0':
-                if (thisSeat.equals("CC")) {
-                    thisTicketPrice = thisTrain.ticketPrice[0];
-                } else if (thisSeat.equals("SB")) {
-                    thisTicketPrice = thisTrain.ticketPrice[1];
-                } else if (thisSeat.equals("GG")) {
-                    thisTicketPrice = thisTrain.ticketPrice[2];
-                }
-                break;
-            case 'G':
-                if (thisSeat.equals("SC")) {
-                    thisTicketPrice = thisTrain.ticketPrice[0];
-                } else if (thisSeat.equals("HC")) {
-                    thisTicketPrice = thisTrain.ticketPrice[1];
-                } else if (thisSeat.equals("SB")) {
-                    thisTicketPrice = thisTrain.ticketPrice[2];
-                }
-                break;
-            case 'K':
-                if (thisSeat.equals("1A")) {
-                    thisTicketPrice = thisTrain.ticketPrice[0];
-                } else if (thisSeat.equals("2A")) {
-                    thisTicketPrice = thisTrain.ticketPrice[1];
-                }
-                break;
-        }
-        Line thisLine = thisTrain.line;
-        int thisStationIndex1 = Station.findStation(thisTicket.stationName1, thisLine);
-        int thisStationIndex2 = Station.findStation(thisTicket.stationName2, thisLine);
-        Station thisStation1 = thisLine.stations.get(thisStationIndex1);
-        Station thisStation2 = thisLine.stations.get(thisStationIndex2);
-        int stationDistance1 = thisStation1.distance;
-        int stationDistance2 = thisStation2.distance;
-        int distance = Math.abs(stationDistance1 - stationDistance2);
-        thisTicket.totalPrice = thisTicketPrice * thisTicket.num * distance;
     }
 
     public static boolean checkAadhaar(String aadhaar) {

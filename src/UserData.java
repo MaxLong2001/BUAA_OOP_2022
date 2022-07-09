@@ -3,10 +3,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserData {
-    public static UserData uniqueInstance = new UserData();
-    public ArrayList<Map<String, String>> dataset = new ArrayList<>();
-
-
+    private static UserData uniqueInstance = new UserData();
+    private ArrayList<Map<String, String>> dataset = new ArrayList<>();
+    
     private UserData() {
     }
 

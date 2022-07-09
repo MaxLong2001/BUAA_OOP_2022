@@ -20,7 +20,7 @@ public class Line {
         }
 
         for (int i = 4; i < args.length; i += 2) {
-            if (!args[i].matches("^\\d+$")) {
+            if (!args[i].matches("^[0-9]+$")) {
                 System.out.println("Arguments illegal");
                 return;
             }
@@ -48,7 +48,7 @@ public class Line {
         }
 
         Line line = new Line(args[1], Integer.parseInt(args[2]));
-        for (int i = 3; i < args.length - 1; i += 2) {
+        for (int i = 3; i < args.length - 1; i+=2) {
             line.stations.add(new Station(args[i], Integer.parseInt(args[i + 1])));
         }
         Test.lineList.add(line);
@@ -140,6 +140,26 @@ public class Line {
 
     public String getLineNo() {
         return lineNo;
+    }
+
+    public void setLineNo(String lineNo) {
+        this.lineNo = lineNo;
+    }
+
+    public int getLoad() {
+        return load;
+    }
+
+    public void setLoad(int load) {
+        this.load = load;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 }
 

@@ -1,19 +1,15 @@
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Test {
     public static int mode = 0;
     public static String logged = "";
-    public static ArrayList<User> userList = new ArrayList<>();
     public static ArrayList<Line> lineList = new ArrayList<>();
     public static ArrayList<Train> trainList = new ArrayList<>();
     public static ArrayList<Ticket> ticketList = new ArrayList<>();
-    public static Map<String, Boolean> certMap = new HashMap<>();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String argStr;
 
@@ -27,18 +23,11 @@ public class Test {
             String[] argOpts = argStr.split(" ");
             switch (argOpts[0]) {
                 case "addUser":
-                    if (argOpts.length != 4 && argOpts.length != 5)
+                    if (argOpts.length != 4)
                         System.out.println("Arguments illegal");
                     else {
-                        if (argOpts.length == 4) {
-                            User user = new User();
-                            user.addUser(argOpts[1], argOpts[2], argOpts[3]);
-                            userList.add(user);
-                        } else {
-                            Student student = new Student();
-                            student.addStudent(argOpts[1], argOpts[2], argOpts[3], argOpts[4]);
-                            userList.add(student);
-                        }
+                        User user = new User();
+                        user.addUser(argOpts[1], argOpts[2], argOpts[3]);
                     }
                     break;
                 case "TunakTunakTun":
@@ -94,21 +83,6 @@ public class Test {
                     break;
                 case "listOrder":
                     User.listOrder(argOpts);
-                    break;
-                case "rechargeBalance":
-                    User.rechargeBalance(argOpts);
-                    break;
-                case "checkBalance":
-                    User.checkBalance(argOpts);
-                    break;
-                case "importCert":
-                    Cert.importCert(argOpts);
-                    break;
-                case "cancelOrder":
-                    User.cancelOrder(argOpts);
-                    break;
-                case "payOrder":
-                    User.payOrder(argOpts);
                     break;
                 default:
                     System.out.println("Command does not exist");
